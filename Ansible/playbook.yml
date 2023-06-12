@@ -1,0 +1,25 @@
+---
+- name: Deployement Apempaiq web sur serveur
+  hosts: web
+  remote_user: root
+  vars:
+    user1: utilisateur1
+
+    domain_web: ?
+
+    port_web : 8081
+    port_api: 8443
+    image_web: apempaiq-web
+    image_api: apempaiq-api
+
+  roles:
+    - utils
+    - user 
+    - docker
+    - nginx
+
+
+
+
+
+...

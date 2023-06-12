@@ -1,0 +1,5 @@
+---
+- name: Installation prerequis
+      apt: name={{item}} update_cache=yes stat e=latest
+      with_items:
+        - ssh

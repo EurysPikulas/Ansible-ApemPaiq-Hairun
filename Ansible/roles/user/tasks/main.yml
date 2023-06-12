@@ -1,0 +1,7 @@
+---
+- name: Création d'utilisateur
+  become: yes 
+  user: name={{user1}} 
+
+#- name: Ajout de la clef SSH
+#  authorized_key: user={{user1}} key="{{ lookup('file', '~/.ssh/id-rsa.pub')}}"

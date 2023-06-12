@@ -1,0 +1,53 @@
+---
+- name: Installation docker
+  become: yes
+  apt: name=docker state=latest
+
+
+##copie l'image docker de l'application web
+- name: Copier l'image .tar vers le serveur
+  become: yes
+  ansible.builtin.file:
+    src: "../../../../image_apempaiq-web.tar "
+    dest: ~/Apempaiq
+    owner: {{user1}}
+    group: {{user1}}
+
+
+##lancement l'image docker de l'application web
+- name: Charger et Lancer l'image 
+  command: docker load -i ~/Apempaiq/image_apempaiq-web.tar && docker run -d -p {{port_web}}:80 --name {{ image_web }} image_apempaiq-web 
+
+
+##copie l'image docker de l'application back
+- name: Copier l'image .tar vers le serveur
+  become: yes
+  ansible.builtin.file:
+    src: "../../../../image_apempaiq-api.tar "
+    dest: ~/Apempaiq
+    owner: {{user1}}
+    group: {{user1}}
+
+
+##lancement  l'image docker de l'application back
+- name: Charger l'image 
+  command: docker load -i ~/Apempaiq/image_apempaiq-api.tar
+
+
+##copie le fichier docker-compose 
+- name: Copier le fichier docker-compose vers le serveur
+  become: yes
+  ansible.builtin.file:
+    src: "../../../../docker-compose.yml"
+    dest: ~/Apempaiq
+    owner: {{user1}}
+    group: {{user1}}
+
+
+##lancement le fichier docker-compose 
+- name: Lancer le docker-compose
+  become: yes
+  command: docker compose -f ~/Apempaiq/docker-compose.yml up -d  
+
+
+  

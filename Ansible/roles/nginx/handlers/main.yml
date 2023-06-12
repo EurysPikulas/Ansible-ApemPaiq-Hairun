@@ -1,0 +1,3 @@
+---
+- name: Reloader le service nginx 
+  service: name=nginx state=reloaded 

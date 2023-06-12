@@ -1,0 +1,28 @@
+---
+
+
+- name: Intallation de nginx
+  become: yes
+  apt: name=nginx state=latest
+
+- name: Demarrage de service nginx
+  become: yes 
+  service: name=nginx state=started unabled=true
+
+- name: Supprimer default.config
+  become: yes
+  file: path=/etc/nginx/sites-enabled/default state=absent
+  notify: Reloader le service nginx 
+
+
+
+#creation fichier de configuration nginx pour le web
+- name: Copier la configuration nginx dans sites-available
+  become: yes
+  template: src=template/nginx-conf-web.j2 dest=/etc/nginx/sites-available/{{ domain_web }}
+
+- name: Activation du domain - lien symbolique
+  become: yes
+  file: src=/etc/nginx/sites-available/{{domain_web}} dest=/etc/nginx/sites-enabled/{{domain_web}}
+  notify: Reloader le service nginx
+
